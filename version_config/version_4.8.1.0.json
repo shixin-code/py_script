@@ -1,0 +1,23 @@
+{
+    "default": {
+        "version": "4.8.1.0",
+        "desc_file": "version_4.8.1.0_desc.txt",
+        "pub_date" : "20210812"
+    },
+    "platform": [
+        {
+            "platform": "win",
+            "url": "https://oss-hqwx-mob.hqwx.com/HqClassWinTeacherSetup-4.8.1.0.exe",
+            "size": 65435880,
+            "md5": "e49f54611f8f72d2186ebdaa6616b78f",
+            "version": "4.8.1.1",
+            "desc_file": "version_4.8.1.0_desc.txt"
+        },
+        {
+            "platform": "mac",
+            "url": "https://oss-hqwx-mob.hqwx.com/HqClassMacTeacher-4.8.1.0.dmg",
+            "size": 111519263,
+            "md5": "fb4b11aad49504d6bebd9c0316f9e97f"
+        }
+    ]
+}
