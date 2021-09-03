@@ -5,10 +5,10 @@ import re
 import time
 from sys import stderr
 import log
-import redis_config
+import utils
 
 if __name__ == '__main__':
-    cmd = [redis_config.redis_cli, '-h', redis_config.redis_server, '-p', redis_config.redis_port, 'keys', 'room-config:*']
+    cmd = utils.redis_cmd(['keys', 'room-config:*'])
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
     
     stdout, stderr = p.communicate()
@@ -24,7 +24,7 @@ if __name__ == '__main__':
         if len(room_id) == 0:
             log.i('invalid room id:' + key)
             continue
-        cmd = [redis_config.redis_cli, '-h', redis_config.redis_server, '-p', redis_config.redis_port, 'hget', key, 'cur_live_platform']
+        cmd = utils.redis_cmd(['hget', key, 'cur_live_platform'])
         p = subprocess.Popen(cmd, stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
         stdout, stderr = p.communicate()
         plt = stdout.split('\n')[0]

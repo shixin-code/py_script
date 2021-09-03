@@ -7,7 +7,6 @@ import sys
 import argparse
 from sys import stderr
 import log
-import redis_config
 import utils
 
 parser = argparse.ArgumentParser('Usage: %s' % sys.argv[0])
@@ -25,7 +24,7 @@ if __name__ == '__main__':
     live_platform_room = {}
     for room_id in room_list:
         index += 1
-        cmd = [redis_config.redis_cli, '-h', redis_config.redis_server, '-p', redis_config.redis_port, 'hget', 'room-config:%s'%room_id, 'cur_live_platform']
+        cmd = utils.redis_cmd(['hget', 'room-config:%s'%room_id, 'cur_live_platform'])
         p = subprocess.Popen(cmd, stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=False)
         stdout, stderr = p.communicate()
         plt = stdout.split('\n')[0]

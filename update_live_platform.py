@@ -21,7 +21,7 @@ if __name__ == '__main__':
     for r in room_list: 
         i += 1
         log.i(str(i) + " set room [%s] live platfrom to [%s] ---------------"%(r, args.platform))
-        cmd = [redis_cli, '-h', '10.22.133.80', '-p', '19001', 'hmset', 'room-config:%s'%r, 'cur_live_platform', args.platform]
+        cmd = utils.redis_cmd(['hmset', 'room-config:%s'%r, 'cur_live_platform', args.platform])
         log.i('cmd=' + ' '.join(cmd))
         subprocess.call(cmd)
 
