@@ -36,5 +36,5 @@ if __name__ == '__main__':
         time.sleep(0.05)
 
     for key in live_platform_room.keys():
-        log(key + "=" + ','.live_platform_room[key])
+        log.i(key + '=' + ','.join(live_platform_room[key]))
     
