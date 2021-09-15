@@ -4,6 +4,7 @@ import argparse
 import sys
 import log
 import subprocess
+import utils
 
 parser = argparse.ArgumentParser('Usage: %s' % sys.argv[0])
 parser.add_argument('--room', help='specify room id. multi room id split with ","')
@@ -12,8 +13,6 @@ parser.add_argument('--enable', action="store_true", dest='enable', help='enable
 parser.add_argument('--disable', action="store_false", dest='enable', help='disenable local record')
 args = parser.parse_args()
 parser.set_defaults(enable=True)
-
-redis_cli = '/data/services/redis.4.0.6/redis-cli'
 
 if __name__ == '__main__':
     room_list = []
@@ -31,7 +30,7 @@ if __name__ == '__main__':
         log.i("set room %s local record to %s"%(r, args.enable))
         val = 1 if args.enable else 0
         config = '{"enable_local_record":%s,"disk_free_notify":2}'%(val)
-        cmd = [redis_cli, '-h', '10.22.133.80', '-p', '19001', 'hmset', 'room-config:%s'%r, 'local_record_config', config]
+        cmd = utils.redis_cmd(['hmset', 'room-config:%s'%r, 'local_record_config', config])
         log.i(str(i) + '. cmd=' + ' '.join(cmd))
         subprocess.call(cmd)
 
