@@ -7,6 +7,7 @@ import subprocess
 import os.path
 import json
 import io
+import utils
 
 parser = argparse.ArgumentParser('Usage: %s' % sys.argv[0])
 parser.add_argument('--versionfile', help='version file', required=True)
@@ -37,9 +38,10 @@ def to_version_id(version):
     
 
 if __name__ == '__main__': 
-    host = '10.22.133.80' if args.notest else '10.22.130.89'
+    host = None if args.notest else '10.22.130.89'
     file_path = os.path.abspath(args.versionfile)
     file_dir, file_name = os.path.split(file_path)
+    log.i('official env' if args.notest else "test env")
     log.i('version config file=' + file_path)
     log.i('version file dir=' + file_dir + ", " + file_name)
     with open(file_path,'r') as f:
@@ -52,7 +54,7 @@ if __name__ == '__main__':
         platforms = version_data.get('platform')
         for plt_version_data in platforms:
             platform = plt_version_data['platform']
-            log.i('upgrad ' + platform + "----------------")
+            log.i('upgrade ' + platform + "----------------")
             version = plt_version_data.get('version', def_version)
             desc_file = plt_version_data.get('desc_file', def_desc_file)
             download_url = plt_version_data.get('url') 
@@ -65,9 +67,9 @@ if __name__ == '__main__':
             log.i('size=' + str(size))
             log.i('pub date=' + pub_date)
             log.i('desc file=' + desc_file)
-            cmd = [redis_cli, '-h', host, '-p', '19001', 'hmset', 'cur_cli_ver:teacherapp:%s'%platform, "version", version,
+            cmd = utils.redis_cmd(['hmset', 'cur_cli_ver:teacherapp:%s'%platform, "version", version,
                 'versionId', str(to_version_id(version)), "downUrl", download_url, 'desc', get_desc(os.path.join(file_dir, desc_file)), 
-                'pubDate', pub_date, 'md5', md5, 'size', str(size), 'updateType', str(update_type)]
+                'pubDate', pub_date, 'md5', md5, 'size', str(size), 'updateType', str(update_type)], host)
             print(cmd)
             subprocess.check_call(cmd)
             # log.i('cmd=' + ' '.join(cmd))
